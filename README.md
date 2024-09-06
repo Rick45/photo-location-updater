@@ -4,7 +4,7 @@ Photo Location Updater is a PyQt6 application that allows users to update the ge
 
 ## Warning
 
-**Important:** This tool results in the modification data. It is highly recommended to perform a backup of your data before executing the script. The author of this script is not responsible for any data loss or damage that may occur during the execution of this script.
+**Important:** This tool results in data modification. It is highly recommended that a data backup be performed before executing the script. The script's author is not responsible for any data loss or damage that may occur during the execution of this script.
 
 ## Features
 
