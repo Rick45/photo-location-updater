@@ -61,7 +61,7 @@ Photo Location Updater is a PyQt6 application that allows users to update the ge
 
 Alternatively, you can use the following methods to run the application:
 
-- Download the executable file from the [Releases](https://github.com/yourusername/photo-location-updater/releases) tab and run it directly on your system.
+- Download the executable file from the [Releases](https://github.com/Rick45/photo-location-updater/releases) tab and run it directly on your system.
 
 
 ## Acknowledgements
