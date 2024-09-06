@@ -71,3 +71,5 @@ This project would not have been possible without the OpenStreetMap:
 - [OpenStreetMap](https://www.openstreetmap.org/)
 
 
+## Thanks
+[!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/rick45)
