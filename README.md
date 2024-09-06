@@ -13,6 +13,8 @@ Photo Location Updater is a PyQt6 application that allows users to update the ge
 - View the current geolocation of a selected photo.
 - Update the geolocation of a photo using a map interface.
 
+![app](./src/sample.png)
+
 ## Requirements
 
 - Python 3.6+
