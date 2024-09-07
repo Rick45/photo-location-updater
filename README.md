@@ -15,16 +15,34 @@ Photo Location Updater is a PyQt6 application that allows users to update the ge
 
 ![app](./src/sample.png)
 
-## Requirements
+
+
+## App Execution 
+
+There are two ways to run the app.
+
+1. By download the executable and run it directly on your system. **Important:** that the windows could say the app is unverified.
+
+2. By downloading this repository and run it from the source code.
+
+
+
+## Execution with .exe
+
+1. Download the executable file from the [Releases](https://github.com/Rick45/photo-location-updater/releases) tab.
+
+2. Extracto to your desired folder **Important:** you need to extract all the content(both EXE and folder).
+
+3. Run the "Photo Location Updater.exe" file
+
+
+## Execution by source code
+
+### Requirements
 
 - Python 3.6+
-- ipyleaflet
-- ipywidgets 
-- piexif 
-- PyQt6 
-- PyQt6_sip 
 
-## Installation
+### Installation
 
 1. Clone the repository:
    ```sh
@@ -44,24 +62,21 @@ Photo Location Updater is a PyQt6 application that allows users to update the ge
    pip install -r requirements.txt
    ```
 
-## Usage
-
-1. Run the application:
+4. Run the application:
     ```sh
     python main.py
     ```
 
-2. Use the GUI to select a folder containing photos.
 
-3. Select a photo from the list to view its current geolocation.
+## App Usage
 
-4. Click on the map to update the geolocation of the selected photo.
+1. Use the GUI to select a folder containing photos.
 
-5. Save the updated geolocation metadata to the photo.
+2. Select a photo from the list to view its current geolocation.
 
-Alternatively, you can use the following methods to run the application:
+3. Click on the map to update the geolocation of the selected photo.
 
-- Download the executable file from the [Releases](https://github.com/Rick45/photo-location-updater/releases) tab and run it directly on your system.
+4. Save the updated geolocation metadata to the photo.
 
 
 ## Acknowledgements
