@@ -1,17 +1,19 @@
-# Photo Location Updater
+![Python Version](https://img.shields.io/badge/python-3.6%2B-blue)
+![License](https://img.shields.io/github/license/Rick45/photo-location-updater)
 
-Photo Location Updater is a PyQt6 application that allows users to update the geolocation metadata of their photos. The application provides a graphical user interface (GUI) to select photos, view their current geolocation, and update the coordinates using a map interface.
+# Photo Location Updater
+A simple tool to seamlessly update the geolocation metadata of your photos using an intuitive map-based interface. Whether you need to correct or add location data, this app makes it easy.
+
 
 ## Warning
 
 **Important:** This tool results in data modification. It is highly recommended that a data backup be performed before executing the script. The script's author is not responsible for any data loss or damage that may occur during the execution of this script.
 
 ## Features
+- 📂 Select a folder containing photos
+- 🌍 View and update photo geolocation on an interactive map
+- 💾 Save updated metadata easily
 
-- Select a folder containing photos.
-- Display a list of photos in the selected folder.
-- View the current geolocation of a selected photo.
-- Update the geolocation of a photo using a map interface.
 
 ![app](./src/sample.png)
 
@@ -42,31 +44,26 @@ There are two ways to run the app.
 
 - Python 3.6+
 
-### Installation
-
+## Installation (via source)
 1. Clone the repository:
-   ```sh
-   git clone https://github.com/yourusername/photo-location-updater.git
-   cd photo-location-updater
-   ```
-
-2. Create and activate a virtual environment:
-   ```sh
-   python -m venv venv
-   venv\Scripts\activate  # On Windows
-   source venv/bin/activate  # On macOS/Linux
-   ```
-
-3. Install the required packages:
-   ```sh
-   pip install -r requirements.txt
-   ```
-
-4. Run the application:
-    ```sh
-    python main.py
+    ```bash
+    git clone https://github.com/Rick45/photo-location-updater.git
+    ```
+2. Create a virtual environment:
+    ```bash
+    python -m venv venv
+    source venv/bin/activate  # On macOS/Linux
+    venv\Scripts\activate     # On Windows
+    ```
+3. Install dependencies:
+    ```bash
+    pip install -r requirements.txt
     ```
 
+4. Run the app:
+    ```bash
+    python main.py
+    ```
 
 ## App Usage
 
