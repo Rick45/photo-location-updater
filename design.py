@@ -7,7 +7,8 @@
 
 
 from PyQt6 import QtCore,  QtWidgets
-from PyQt6.QtCore import pyqtSlot
+from PyQt6.QtCore import pyqtSlot, Qt, QRect, QMetaObject
+from PyQt6.QtGui import QAction
 from PyQt6.QtWebEngineWidgets import QWebEngineView
 
 
@@ -36,7 +37,7 @@ class Ui_MainWindow(object):
         self.imageViewWidget.setMaximumSize(600, 400)
         self.imageViewWidget.setMinimumSize(500,200)
         self.imageViewWidget.setObjectName("imageViewWidget")
-        self.gridLayout.addWidget(self.imageViewWidget, 1, 2, 1, 4)
+        self.gridLayout.addWidget(self.imageViewWidget, 1, 2, 1, 4,alignment=Qt.AlignmentFlag.AlignCenter)
 
         self.folderSelectButton = QtWidgets.QPushButton(parent=self.centralwidget)
         self.folderSelectButton.setObjectName("folderSelectButton")
@@ -67,9 +68,27 @@ class Ui_MainWindow(object):
         self.menubar.setObjectName("menubar")
         MainWindow.setMenuBar(self.menubar)
 
-        self.statusbar = QtWidgets.QStatusBar(parent=MainWindow)
-        self.statusbar.setObjectName("statusbar")
+        self.actionAbout = QAction(MainWindow)
+        self.actionAbout.setObjectName(u"actionAbout")
+
+        self.menubar.setObjectName(u"menubar")
+        self.menubar.setGeometry(QRect(0, 0, 800, 22))
+        self.menuHelp = QtWidgets.QMenu(self.menubar)
+        self.menuHelp.setObjectName(u"Help")
+        MainWindow.setMenuBar(self.menubar)
+        self.statusbar = QtWidgets.QStatusBar(MainWindow)
+        self.statusbar.setObjectName(u"statusbar")
         MainWindow.setStatusBar(self.statusbar)
+
+        self.menubar.addAction(self.menuHelp.menuAction())
+        self.menuHelp.addAction(self.actionAbout)
+
+        self.retranslateUi(MainWindow)
+
+        QMetaObject.connectSlotsByName(MainWindow)
+        # setupUi
+
+
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -82,6 +101,9 @@ class Ui_MainWindow(object):
         self.folderSelectButton.setText(_translate("MainWindow", "Select Folder"))
         self.previousButton.setText(_translate("MainWindow", "<"))
         self.SaveButton.setText(_translate("MainWindow", "Save and next"))
+        
+        self.menuHelp.setTitle(QtCore.QCoreApplication.translate("MainWindow", u"Help", None))
+        self.actionAbout.setText(QtCore.QCoreApplication.translate("MainWindow", u"About", None))
        
 
     def create_mapHTLM(self):

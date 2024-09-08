@@ -2,11 +2,12 @@ import os
 import sys
 from metadataHandler import get_image_metadata, apply_metadata_to_image
 from design import Ui_MainWindow
-from PyQt6.QtCore import pyqtSignal, pyqtSlot, QObject
+from PyQt6.QtCore import pyqtSignal, pyqtSlot, QObject, Qt
 from PyQt6.QtWidgets import QApplication, QMainWindow, QFileDialog, QListWidgetItem, QMessageBox
 from PyQt6.QtWebChannel import QWebChannel
 from PyQt6.QtGui import QPixmap, QImageReader
 from PyQt6.QtWebEngineWidgets import QWebEngineView
+from contactDialog import *
 
 #global vars
 selectedCoordinates = None
@@ -47,12 +48,17 @@ class Window(QMainWindow, Ui_MainWindow):
         self.nextButton.clicked.connect(self.handle_nextButton)
         self.previousButton.clicked.connect(self.handle_previousButton)
         
-
+        self.actionAbout.triggered.connect(self.show_contact_info)
 
         ##############################image
         
         # Connect the item click event to a method
         self.fileListWidget.itemClicked.connect(self.show_image)
+
+    def show_contact_info(self):
+            dialog = ContactDialog()
+            dialog.exec()
+
 
     def handle_previousButton(self):
         """
@@ -212,21 +218,22 @@ class Window(QMainWindow, Ui_MainWindow):
             self.show_image(firstfile)
 
     def show_image(self, item):
-            """
-            Display the selected image in the image view widget and set its location on the map.
-            Parameters:
-            - item: The item representing the selected image.
-            Returns:
-            None
-            """
-            # Get the full path of the selected image
-            image_path = item.data(1)
-            pixmap = QPixmap(image_path)
-            self.imageViewWidget.setPixmap(pixmap)
+        """
+        Display the selected image in the image view widget and set its location on the map.
+        Parameters:
+        - item: The item representing the selected image.
+        Returns:
+        None
+        """
+        # Get the full path of the selected image
+        image_path = item.data(1)
+        pixmap = QPixmap(image_path)
+        self.imageViewWidget.setPixmap(pixmap)
+        self.imageViewWidget.setAlignment(Qt.AlignmentFlag.AlignCenter)  # Center the image
 
-            ##logic to show image in map
-            metadata = get_image_metadata(image_path)
-            self.set_image_location(metadata)
+        ##logic to show image in map
+        metadata = get_image_metadata(image_path)
+        self.set_image_location(metadata)
 
     def set_image_location(self, metadata):
         """
