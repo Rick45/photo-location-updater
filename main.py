@@ -1,9 +1,10 @@
 import os
 import sys
 from metadataHandler import get_image_metadata, apply_metadata_to_image
+from locationHistoryLoader import parse_json_file, get_closest_location
 from design import Ui_MainWindow
 from PyQt6.QtCore import pyqtSignal, pyqtSlot, QObject, Qt
-from PyQt6.QtWidgets import QApplication, QMainWindow, QFileDialog, QListWidgetItem, QMessageBox
+from PyQt6.QtWidgets import QApplication, QMainWindow, QFileDialog, QListWidgetItem, QMessageBox, QTreeWidgetItem
 from PyQt6.QtWebChannel import QWebChannel
 from PyQt6.QtGui import QPixmap, QImageReader
 from PyQt6.QtWebEngineWidgets import QWebEngineView
@@ -13,6 +14,7 @@ from contactDialog import *
 selectedCoordinates = None
 previousCoordinates = None
 originalCoordinates = None
+takeOutData = None
 
 class Handler(QObject):
     coordinates_received = pyqtSignal(float, float)
@@ -37,6 +39,9 @@ class Window(QMainWindow, Ui_MainWindow):
         self.mapViewWidget.page().setWebChannel(self.channel)
 
 
+        self.gpsFilesListWidget.hide()
+        self.clearGoogleTakeOutButton.hide()
+
         self.folderSelectButton.clicked.connect(self.select_folder)
 
         self.handler.coordinates_received.connect(self.handle_coordinates)
@@ -50,10 +55,25 @@ class Window(QMainWindow, Ui_MainWindow):
         
         self.actionAbout.triggered.connect(self.show_contact_info)
 
+        
+        self.googleTakeOutButton.clicked.connect(self.select_folderTakeOutFile)
+
+        self.clearGoogleTakeOutButton.clicked.connect(self.select_clearTakoutFile)
         ##############################image
         
         # Connect the item click event to a method
         self.fileListWidget.itemClicked.connect(self.show_image)
+
+        self.gpsFilesListWidget.itemClicked.connect(self.loadTakeOutFile)
+
+    def select_clearTakoutFile(self):
+        global takeOutData
+        takeOutData = None
+        self.gpsFilesListWidget.hide()
+        self.gpsFilesListWidget.clear()        
+        self.clearGoogleTakeOutButton.hide()
+        self.createAlert("Takeout file cleared, no location will be calculated from the takeout file")
+
 
     def show_contact_info(self):
             dialog = ContactDialog()
@@ -233,7 +253,11 @@ class Window(QMainWindow, Ui_MainWindow):
 
         ##logic to show image in map
         metadata = get_image_metadata(image_path)
-        self.set_image_location(metadata)
+        if(metadata.__len__() == 1 and 'CreatedDate' in metadata and takeOutData != None):
+            self.set_image_aproximated_location(metadata)
+            return
+        else:
+            self.set_image_location(metadata)
 
     def set_image_location(self, metadata):
         """
@@ -260,6 +284,67 @@ class Window(QMainWindow, Ui_MainWindow):
         else:
             self.mapViewWidget.page().runJavaScript(f"updateMapLocation(0, 0, 2);")
 
+
+    def set_image_aproximated_location(self, metadata):
+        closestLocation = get_closest_location(takeOutData, metadata['CreatedDate'])
+        if closestLocation[0] == None:
+            return
+        else:
+            # Remove all existing markers
+            self.mapViewWidget.page().runJavaScript("map.eachLayer(function(layer) { if (layer instanceof L.Marker) { map.removeLayer(layer); } });")
+            self.mapViewWidget.page().runJavaScript("closePopup();")
+            global selectedCoordinates
+            # Set the image location on the map
+            lat = closestLocation[0]
+            lng = closestLocation[1]
+            selectedCoordinates = (lat, lng)
+            distanceInMinutes = round(closestLocation[2], 2)
+            self.mapViewWidget.page().runJavaScript(f"updateMapLocation({lat}, {lng}, 15);")
+            hours, minutes = divmod(distanceInMinutes, 60)
+            jscode = str(f"L.marker([{lat},{lng}], {{icon: calculatedLocation}}).addTo(map).bindPopup('Calculated location have {int(hours):02d}H{int(minutes):02d}M difference from the photo date');")
+            self.mapViewWidget.page().runJavaScript(jscode)
+
+
+    def select_folderTakeOutFile(self):
+        # Clear the fileListView before adding new items
+        self.clearGoogleTakeOutButton.show()
+        self.gpsFilesListWidget.show()
+        self.gpsFilesListWidget.clear()
+        folder_path = QFileDialog.getExistingDirectory(self, 'Select Folder')
+        # List all photo files in the selected folder
+        files_extensions = ('.json')
+        firstfile = None
+
+        for root, dirs, files in os.walk(folder_path):
+            json_files = [file_name for file_name in files if file_name.lower().endswith(files_extensions)]
+            if json_files:
+                parent_item = QTreeWidgetItem(self.gpsFilesListWidget, [os.path.basename(root)])
+                for file_name in json_files:
+                    item = QTreeWidgetItem(parent_item, [file_name])
+                    item.setData(0, Qt.ItemDataRole.UserRole, root+'/'+file_name)  # Store the full path
+                    if firstfile is None:
+                        firstfile = item
+        
+    def loadTakeOutFile(self, item, column):
+
+        global takeOutData
+        
+        file_path = item.data(0, Qt.ItemDataRole.UserRole)
+        #file_path = QFileDialog.getOpenFileName(self, 'Select Takeout File', '', 'JSON Files (*.json)')
+        if file_path:
+            try:
+                takeOutData = parse_json_file(file_path)
+                current_row = self.fileListWidget.currentRow()
+                self.show_image(self.fileListWidget.currentItem())
+                self.createAlert("Takeout file loaded successfully, if there is no location metadata in the photo, the system will use the takeout data to get the closest location for the photo created date")
+            except:
+                self.createAlert("Invalid Takeout file")
+
+        else:
+            self.createAlert("No no file selected nothing will be processed")
+            return
+
+        
 
 
 app = QApplication(sys.argv)

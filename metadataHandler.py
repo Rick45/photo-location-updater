@@ -3,21 +3,28 @@ import piexif
 patternForDecimals = r"\(\s*\d+\s*,\s*\d+\s*\)"
 
 def get_image_metadata(image_path):
-
     exif_dict = piexif.load(image_path)
     metadata = {}
     latitudeRef = None
     longitudeRef = None
     latitude = None
     longitude = None
+    created_date = None
+
     if exif_dict['GPS'] != {}:
-        latitudeRef = str(exif_dict['GPS'][piexif.GPSIFD.GPSLatitudeRef]) 
+        latitudeRef = str(exif_dict['GPS'][piexif.GPSIFD.GPSLatitudeRef])
         longitudeRef = str(exif_dict['GPS'][piexif.GPSIFD.GPSLongitudeRef])
         latitude = exif_dict['GPS'][piexif.GPSIFD.GPSLatitude]
-        longitude = exif_dict['GPS'][piexif.GPSIFD.GPSLongitude] 
-    
+        longitude = exif_dict['GPS'][piexif.GPSIFD.GPSLongitude]
+
+    if exif_dict['Exif'] != {}:
+        created_date = exif_dict['Exif'].get(piexif.ExifIFD.DateTimeOriginal)
+
     if latitudeRef and longitudeRef and latitude and longitude:
         metadata = convert_to_decimal(latitudeRef, longitudeRef, latitude, longitude)
+
+    if created_date:
+        metadata['CreatedDate'] = created_date.decode('utf-8') if isinstance(created_date, bytes) else created_date
 
     return metadata
 
