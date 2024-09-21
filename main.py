@@ -135,12 +135,25 @@ class Window(QMainWindow, Ui_MainWindow):
             selectedCoordinates = previousCoordinates
             self.mapViewWidget.page().runJavaScript("map.eachLayer(function(layer) { if (layer instanceof L.Marker) { map.removeLayer(layer); } });")
             self.mapViewWidget.page().runJavaScript("closePopup();")
-
-            self.mapViewWidget.page().runJavaScript(f"L.marker([{previousCoordinates[0]},{previousCoordinates[1]}], {{icon: newLocationIcon}}).addTo(map).bindPopup('New Location: Latitude = {previousCoordinates[0]}, Longitude = {previousCoordinates[1]}');")  # Add marker to the map with info
-            self.mapViewWidget.page().runJavaScript(f"L.marker([{originalCoordinates[0]},{originalCoordinates[1]}], {{icon: oldLocationIcon}}).addTo(map).bindPopup('Original Location: Latitude = {originalCoordinates[0]}, Longitude = {originalCoordinates[1]}');")  # Add marker to the map with info
+            self.mapViewWidget.page().runJavaScript(f"L.marker([{previousCoordinates[0]},{previousCoordinates[1]}], {{icon: newLocationIcon}}).addTo(map).bindPopup('New Location: Latitude = {round(previousCoordinates[0], 8)}, Longitude = {round(previousCoordinates[1])}');")  # Add marker to the map with info
             
 
-            self.mapViewWidget.page().runJavaScript(f"updateMapLocation({previousCoordinates[0]}, {previousCoordinates[1]}, 15);")
+            if originalCoordinates != None:
+                self.mapViewWidget.page().runJavaScript(f"L.marker([{originalCoordinates[0]},{originalCoordinates[1]}], {{icon: oldLocationIcon}}).addTo(map).bindPopup('Original Location: Latitude = {round(originalCoordinates[0])}, Longitude = {round(originalCoordinates[1])}');")  # Add marker to the map with info
+            
+            #self.mapViewWidget.page().runJavaScript(f"updateMapLocation({previousCoordinates[0]}, {previousCoordinates[1]}, 15);")
+
+            # Adjust the map view to show both markers
+            if originalCoordinates:
+                self.mapViewWidget.page().runJavaScript(f"""
+                    var bounds = L.latLngBounds([
+                        [{previousCoordinates[0]}, {previousCoordinates[1]}],
+                        [{originalCoordinates[0]}, {originalCoordinates[1]}]
+                    ]);
+                    map.fitBounds(bounds);
+                """)
+            else:
+                self.mapViewWidget.page().runJavaScript(f"map.setView([{previousCoordinates[0]}, {previousCoordinates[1]}], 15);")
   
         else:
             self.createAlert("No Previous Coordinates to apply")
@@ -274,13 +287,17 @@ class Window(QMainWindow, Ui_MainWindow):
         self.mapViewWidget.page().runJavaScript("map.eachLayer(function(layer) { if (layer instanceof L.Marker) { map.removeLayer(layer); } });")
         self.mapViewWidget.page().runJavaScript("closePopup();")
         global originalCoordinates
+        
+        originalCoordinates = None
         # Set the image location on the map
         if 'GPSLatitude' in metadata and 'GPSLongitude' in metadata:
             lat = metadata['GPSLatitude']
             lng = metadata['GPSLongitude']
             originalCoordinates= (lat, lng)
             self.mapViewWidget.page().runJavaScript(f"updateMapLocation({lat}, {lng}, 15);")
-            jscode = str(f"L.marker([{lat},{lng}], {{icon: newLocationIcon}}).addTo(map).bindPopup('Location: Latitude = {lat}, Longitude = {lng}');")
+            latRounded = round(lat, 8)
+            lngRounded  = round(lng, 8)
+            jscode = str(f"L.marker([{lat},{lng}], {{icon: newLocationIcon}}).addTo(map).bindPopup('Location: Latitude = {latRounded}, Longitude = {lngRounded}');")
             self.mapViewWidget.page().runJavaScript(jscode)  # Add marker to the map with info
         else:
             self.mapViewWidget.page().runJavaScript(f"updateMapLocation(0, 0, 2);")
