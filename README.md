@@ -12,6 +12,7 @@ A simple tool to seamlessly update the geolocation metadata of your photos using
 ## Features
 - 📂 Select a folder containing photos
 - 🌍 View and update photo geolocation on an interactive map
+- 🤖 Automate geolocation updates using Google Takeout data
 - 💾 Save updated metadata easily
 
 
@@ -74,6 +75,30 @@ There are two ways to run the app.
 3. Click on the map to update the geolocation of the selected photo.
 
 4. Save the updated geolocation metadata to the photo.
+
+Optionally you can load the google takeout files using the Load Google Takeout button. When a file from the list is selected the app will use it to find the location with the date closest the photo taken date. Google share the location history by month, so you will need to know the month where the photo was taken.
+
+
+
+## How to Request Location Data from Google Takeout
+
+1. Go to Google Takeout: Visit Google Takeout and sign in with your Google account.
+
+2. Select Data to Include:
+
+3. Click on "Deselect all" to clear all selections.
+4. Scroll down and find "Location History".
+5. Check the box next to "Location History".
+6. Choose File Type, Frequency & Destination:
+
+7. Click on "Next step".
+8. Choose the delivery method,export frequency, file type and size.
+9. Click on "Create export".
+
+Google will prepare your data, which may take some time depending on the amount of data.
+Once the export is ready, you will receive an email with a download link.
+Download the .zip file and extract it to a folder on your computer.
+This folder can be selected and all the files will be listed in the aplication to be selected.
 
 
 ## Acknowledgements

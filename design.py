@@ -146,7 +146,7 @@ class Ui_MainWindow(object):
         self.folderSelectButton.setText(_translate("MainWindow", "Select Folder"))
         self.previousButton.setText(_translate("MainWindow", "<"))
         self.SaveButton.setText(_translate("MainWindow", "Save and next"))
-        self.googleTakeOutButton.setText(_translate("MainWindow", u"Google Takout Location", None))
+        self.googleTakeOutButton.setText(_translate("MainWindow", u"Load Google Takout", None))
         self.clearGoogleTakeOutButton.setText(_translate("MainWindow", u"Clear Google Takout", None))
         
         self.menuHelp.setTitle(QtCore.QCoreApplication.translate("MainWindow", u"Help", None))

@@ -71,7 +71,8 @@ class Window(QMainWindow, Ui_MainWindow):
         takeOutData = None
         self.gpsFilesListWidget.hide()
         self.gpsFilesListWidget.clear()        
-        self.clearGoogleTakeOutButton.hide()
+        self.clearGoogleTakeOutButton.hide()        
+        self.show_image(self.fileListWidget.currentItem())
         self.createAlert("Takeout file cleared, no location will be calculated from the takeout file")
 
 
@@ -334,7 +335,6 @@ class Window(QMainWindow, Ui_MainWindow):
         if file_path:
             try:
                 takeOutData = parse_json_file(file_path)
-                current_row = self.fileListWidget.currentRow()
                 self.show_image(self.fileListWidget.currentItem())
                 self.createAlert("Takeout file loaded successfully, if there is no location metadata in the photo, the system will use the takeout data to get the closest location for the photo created date")
             except:
