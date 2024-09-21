@@ -24,9 +24,9 @@ A simple tool to seamlessly update the geolocation metadata of your photos using
 
 There are two ways to run the app.
 
-1. By download the executable and run it directly on your system. **Important:** that the windows could say the app is unverified.
+1. By downloading the executable and running it directly on your system. **Important:** Windows could say the app is unverified.
 
-2. By downloading this repository and run it from the source code.
+2. By downloading this repository and running it from the source code.
 
 
 
@@ -34,7 +34,7 @@ There are two ways to run the app.
 
 1. Download the executable file from the [Releases](https://github.com/Rick45/photo-location-updater/releases) tab.
 
-2. Extracto to your desired folder **Important:** you need to extract all the content(both EXE and folder).
+2. Extract to your desired folder **Important:** you need to extract all the content (both EXE and folder).
 
 3. Run the "Photo Location Updater.exe" file
 
@@ -70,13 +70,13 @@ There are two ways to run the app.
 
 1. Use the GUI to select a folder containing photos.
 
-2. Select a photo from the list to view its current geolocation.
+2. Select a photo from the list to view it and its current geolocation.
 
 3. Click on the map to update the geolocation of the selected photo.
 
 4. Save the updated geolocation metadata to the photo.
 
-Optionally you can load the google takeout files using the Load Google Takeout button. When a file from the list is selected the app will use it to find the location with the date closest the photo taken date. Google share the location history by month, so you will need to know the month where the photo was taken.
+Optionally you can load the google takeout files using the Enable Google Takeout button. When a file from the list is selected, the app will use it to find the location with the date closest to the photo taken date. Google shares the location history by month, so you will need to know the month when the photo was taken.
 
 
 
@@ -92,13 +92,13 @@ Optionally you can load the google takeout files using the Load Google Takeout b
 6. Choose File Type, Frequency & Destination:
 
 7. Click on "Next step".
-8. Choose the delivery method,export frequency, file type and size.
+8. Choose the delivery method, export frequency, file type and size.
 9. Click on "Create export".
 
 Google will prepare your data, which may take some time depending on the amount of data.
 Once the export is ready, you will receive an email with a download link.
 Download the .zip file and extract it to a folder on your computer.
-This folder can be selected and all the files will be listed in the aplication to be selected.
+This folder can be selected and all the files will be listed in the application to be used.
 
 
 ## Acknowledgements
