@@ -135,11 +135,11 @@ class Window(QMainWindow, Ui_MainWindow):
             selectedCoordinates = previousCoordinates
             self.mapViewWidget.page().runJavaScript("map.eachLayer(function(layer) { if (layer instanceof L.Marker) { map.removeLayer(layer); } });")
             self.mapViewWidget.page().runJavaScript("closePopup();")
-            self.mapViewWidget.page().runJavaScript(f"L.marker([{previousCoordinates[0]},{previousCoordinates[1]}], {{icon: newLocationIcon}}).addTo(map).bindPopup('New Location: Latitude = {round(previousCoordinates[0], 8)}, Longitude = {round(previousCoordinates[1])}');")  # Add marker to the map with info
+            self.mapViewWidget.page().runJavaScript(f"L.marker([{previousCoordinates[0]},{previousCoordinates[1]}], {{icon: newLocationIcon}}).addTo(map).bindPopup('New Location: {round(previousCoordinates[0], 8)}, {round(previousCoordinates[1], 8)}');")  # Add marker to the map with info
             
 
             if originalCoordinates != None:
-                self.mapViewWidget.page().runJavaScript(f"L.marker([{originalCoordinates[0]},{originalCoordinates[1]}], {{icon: oldLocationIcon}}).addTo(map).bindPopup('Original Location: Latitude = {round(originalCoordinates[0])}, Longitude = {round(originalCoordinates[1])}');")  # Add marker to the map with info
+                self.mapViewWidget.page().runJavaScript(f"L.marker([{originalCoordinates[0]},{originalCoordinates[1]}], {{icon: oldLocationIcon}}).addTo(map).bindPopup('Original Location: {round(originalCoordinates[0], 8)}, {round(originalCoordinates[1], 8)}');")  # Add marker to the map with info
             
             #self.mapViewWidget.page().runJavaScript(f"updateMapLocation({previousCoordinates[0]}, {previousCoordinates[1]}, 15);")
 
@@ -297,7 +297,7 @@ class Window(QMainWindow, Ui_MainWindow):
             self.mapViewWidget.page().runJavaScript(f"updateMapLocation({lat}, {lng}, 15);")
             latRounded = round(lat, 8)
             lngRounded  = round(lng, 8)
-            jscode = str(f"L.marker([{lat},{lng}], {{icon: newLocationIcon}}).addTo(map).bindPopup('Location: Latitude = {latRounded}, Longitude = {lngRounded}');")
+            jscode = str(f"L.marker([{lat},{lng}], {{icon: newLocationIcon}}).addTo(map).bindPopup('Location: {latRounded}, {lngRounded}');")
             self.mapViewWidget.page().runJavaScript(jscode)  # Add marker to the map with info
         else:
             self.mapViewWidget.page().runJavaScript(f"updateMapLocation(0, 0, 2);")
@@ -319,7 +319,7 @@ class Window(QMainWindow, Ui_MainWindow):
             distanceInMinutes = round(closestLocation[2], 2)
             self.mapViewWidget.page().runJavaScript(f"updateMapLocation({lat}, {lng}, 15);")
             hours, minutes = divmod(distanceInMinutes, 60)
-            jscode = str(f"L.marker([{lat},{lng}], {{icon: calculatedLocation}}).addTo(map).bindPopup('Calculated location have {int(hours):02d}H{int(minutes):02d}M difference from the photo date');")
+            jscode = str(f"L.marker([{lat},{lng}], {{icon: calculatedLocation}}).addTo(map).bindPopup('Calculated location have {int(hours):02d}H{int(minutes):02d}M difference from the photo taken date. Location: {round(lat, 8)}, {round(lng, 8)}');")
             self.mapViewWidget.page().runJavaScript(jscode)
 
 
@@ -352,10 +352,14 @@ class Window(QMainWindow, Ui_MainWindow):
         if file_path:
             try:
                 takeOutData = parse_json_file(file_path)
-                self.show_image(self.fileListWidget.currentItem())
-                self.createAlert("Takeout file loaded successfully, if there is no location metadata in the photo, the system will use the takeout data to get the closest location for the photo created date")
             except:
                 self.createAlert("Invalid Takeout file")
+            
+            if takeOutData == None:
+                self.show_image(self.fileListWidget.currentItem())
+                self.createAlert("Takeout file loaded successfully, if there is no location metadata in the photo, the system will use the takeout data to get the closest location for the photo created date")
+            
+            
 
         else:
             self.createAlert("No no file selected nothing will be processed")
