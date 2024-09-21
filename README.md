@@ -1,7 +1,7 @@
 ![Python Version](https://img.shields.io/badge/python-3.6%2B-blue)
 ![License](https://img.shields.io/github/license/Rick45/photo-location-updater)
 
-# Photo Location Updater
+# Photo Location Updater (EXIF GPS Data Editor)
 A simple tool to seamlessly update the geolocation metadata of your photos using an intuitive map-based interface. Whether you need to correct or add location data, this app makes it easy.
 
 
@@ -107,6 +107,13 @@ This project would not have been possible without the OpenStreetMap:
 
 - [OpenStreetMap](https://www.openstreetmap.org/)
 
+Keywords
+
+    Exif GPS Editor
+    Geotagging Tool
+    Photo Metadata Editor
+    Update Photo Coordinates
+    EXIF Metadata
 
 ## Thanks
 [!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/rick45)
