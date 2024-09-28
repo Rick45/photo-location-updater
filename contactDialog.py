@@ -9,7 +9,7 @@ class ContactDialog(QDialog):
         
         layout = QVBoxLayout()
 
-        version = QLabel("App Information:\nBuilt by: Rick45\nVersion: 1.2")
+        version = QLabel("App Information:\nBuilt by: Rick45\nVersion: 1.2.1")
         layout.addWidget(version)
         
         # Add a QLabel with a clickable URL

@@ -11,14 +11,20 @@ def get_image_metadata(image_path):
     longitude = None
     created_date = None
 
-    if exif_dict['GPS'] != {}:
-        latitudeRef = str(exif_dict['GPS'][piexif.GPSIFD.GPSLatitudeRef])
-        longitudeRef = str(exif_dict['GPS'][piexif.GPSIFD.GPSLongitudeRef])
-        latitude = exif_dict['GPS'][piexif.GPSIFD.GPSLatitude]
-        longitude = exif_dict['GPS'][piexif.GPSIFD.GPSLongitude]
+    gps_data = exif_dict.get('GPS', {})
+    exif_data = exif_dict.get('Exif', {})
 
-    if exif_dict['Exif'] != {}:
-        created_date = exif_dict['Exif'].get(piexif.ExifIFD.DateTimeOriginal)
+    latitudeRef = gps_data.get(piexif.GPSIFD.GPSLatitudeRef)
+    longitudeRef = gps_data.get(piexif.GPSIFD.GPSLongitudeRef)
+    latitude = gps_data.get(piexif.GPSIFD.GPSLatitude)
+    longitude = gps_data.get(piexif.GPSIFD.GPSLongitude)
+
+    if latitudeRef:
+        latitudeRef = str(latitudeRef)
+    if longitudeRef:
+        longitudeRef = str(longitudeRef)
+
+    created_date = exif_data.get(piexif.ExifIFD.DateTimeOriginal)
 
     if latitudeRef and longitudeRef and latitude and longitude:
         metadata = convert_to_decimal(latitudeRef, longitudeRef, latitude, longitude)
